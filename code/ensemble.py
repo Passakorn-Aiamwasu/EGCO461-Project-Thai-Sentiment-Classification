@@ -8,7 +8,7 @@ Needs the Approach C outputs from Colab:
   E2  equal average of C1, C2 and A4 (nothing tuned)
 
 The A4 probabilities for valid/sample come from a model trained on train only; for test,
-A4 is retrained on train+valid, the same way as predictions/<GROUP>_run2_tfidf_lr.csv.
+A4 is retrained on train+valid, the same way as predictions/<GROUP>_run4_tfidf_lr.csv.
 The C runs were trained on train only (RETRAIN_ON_TRAIN_VALID = False in the notebook).
 
 Run from the repo root:  python code/ensemble.py
@@ -87,9 +87,9 @@ def main():
     err["E1"], err["E2"] = to_labels(e1["valid"]), to_labels(e2["valid"])
     err.to_csv(RESULTS_DIR / "ensemble_valid_predictions.csv", index=False)
 
-    for tag, probs in [("e1_bert_tfidf", e1), ("e2_bert2_tfidf", e2)]:
+    for run, tag, probs in [(1, "e2_bert2_tfidf", e2), (2, "e1_bert_tfidf", e1)]:
         pred = to_labels(probs["test"])
-        path = save_submission(test["id"], pred, f"{GROUP}_run5_{tag}.csv")
+        path = save_submission(test["id"], pred, f"{GROUP}_run{run}_{tag}.csv")
         print(f"saved {path.name}: {pd.Series(pred).value_counts(normalize=True).round(3).to_dict()}")
 
 

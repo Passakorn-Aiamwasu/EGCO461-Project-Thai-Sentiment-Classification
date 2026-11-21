@@ -138,7 +138,7 @@ def main():
     test_pred = model.predict(feats.transform(tok["test"], test["text"]))
 
     model_tag = "tfidf_lr" if "lr" in best else "tfidf_svc"
-    path = save_submission(test["id"], test_pred, f"{GROUP}_run2_{model_tag}.csv")
+    path = save_submission(test["id"], test_pred, f"{GROUP}_run4_{model_tag}.csv")
     print(f"saved {path.relative_to(path.parent.parent)}")
     print("predicted class distribution on test:")
     print(pd.Series(test_pred).value_counts(normalize=True).round(3).to_string())

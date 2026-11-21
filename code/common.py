@@ -15,7 +15,7 @@ PRED_DIR = ROOT / "predictions"
 RESULTS_DIR = ROOT / "results"
 
 LABELS = ["pos", "neu", "neg", "q"]
-GROUP = "G00"  # TODO: change to your group number, e.g. "G05"
+GROUP = "G66"
 
 
 def load_data():
