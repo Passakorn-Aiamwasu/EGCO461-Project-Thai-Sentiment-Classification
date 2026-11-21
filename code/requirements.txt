@@ -1,3 +1,7 @@
 pandas
 scikit-learn
 pythainlp
+# Approach C only (preinstalled in Colab except sentencepiece):
+# torch
+# transformers
+# sentencepiece
