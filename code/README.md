@@ -11,6 +11,7 @@ pip install -r code/requirements.txt
 1. `baseline_naive_bayes.ipynb` (repo root): the Naive Bayes baseline from the course.
 2. `python code/approach_a_tfidf.py`: Approach A, TF-IDF + linear models (about 3–4 minutes on a laptop CPU).
 3. `python code/approach_b_normalize_q.py`: Approach B, normalization + q-class handling + label noise (about 7–8 minutes). It imports Approach A's code but does not change it, so the scripts can run in any order.
+4. `code/approach_c_wangchanberta.ipynb`: Approach C, WangchanBERTa fine-tuning. Run in Google Colab with a GPU (see below).
 
 Before submitting, set `GROUP` in `code/common.py` to your group number.
 
@@ -50,6 +51,23 @@ Starts from A4 and changes one thing per step:
 Tuning in B3/B4 uses only out-of-fold predictions on train, so valid stays held out. The best step on valid (excluding B0) is retrained on train+valid.
 
 Outputs: `results/approach_b_results.csv`, `results/approach_b_valid_predictions.csv`, `predictions/<GROUP>_run3_<step>_norm_q.csv`.
+
+## Approach C: WangchanBERTa (Google Colab, GPU)
+
+`code/approach_c_wangchanberta.ipynb` fine-tunes `airesearch/wangchanberta-base-att-spm-uncased`.
+Open it in Colab, set Runtime → T4 GPU, then Run all. The first cell clones this repo. If the repo is private,
+upload a zip of the repo and unzip it to `/content/repo` instead. The last cell downloads `results/` and `predictions/` as a zip.
+
+| Step | Change |
+|---|---|
+| C1 | fine-tune with plain cross-entropy |
+| C2 | C1 + `balanced` class weights in the loss |
+
+Best epoch per run is chosen on valid macro-F1. Outputs: `results/approach_c_results.csv`, `results/approach_c_history.csv`
+(loss and valid F1 per epoch), `results/approach_c_valid_predictions.csv`, valid/sample probabilities
+in `results/approach_c_*_proba.csv` (for ensembles), and `predictions/<GROUP>_run4_wangchanberta.csv`.
+Set `RETRAIN_ON_TRAIN_VALID = True` to retrain the chosen run on train+valid (doubles the run time).
+GPU training is not bit-for-bit deterministic, so a rerun can differ slightly.
 
 ## Shared code
 
