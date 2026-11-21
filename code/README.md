@@ -92,6 +92,14 @@ Averages class probabilities of WangchanBERTa (C) and TF-IDF LR (A4):
 Outputs: `results/ensemble_results.csv`, `results/ensemble_weight_sweep.csv`, `results/ensemble_valid_predictions.csv`,
 `predictions/<GROUP>_run1_e2_bert2_tfidf.csv`, `predictions/<GROUP>_run2_e1_bert_tfidf.csv`.
 
+## Error analysis
+
+`python code/error_analysis.py` writes `results/error_analysis_sheet.csv`: every E2 error on sample_labeled
+(with a draft cause) and 50 random E2 errors on valid, with A4 / C1 / E2 predictions side by side.
+Fill in `label_correct`, `better_label`, `cause` (list in the script) and `note`, then run
+`python code/error_analysis.py --summarize` to get `results/error_analysis_summary.csv`.
+Rerunning without `--summarize` overwrites the sheet.
+
 ## Shared code
 
 `common.py` holds shared helpers (`load_data`, `thai_tokenize`, `evaluate`, `save_submission`). Use them in later approaches so every result is measured the same way.
