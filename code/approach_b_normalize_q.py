@@ -198,7 +198,7 @@ def main():
         err[name] = p
     err.to_csv(RESULTS_DIR / "approach_b_valid_predictions.csv", index=False)
 
-    # Select on valid macro-F1 only. B0 is a rerun of A4 (already submitted as run2).
+    # Select on valid macro-F1 only. B0 is a rerun of A4 (submitted as run4).
     best = results.drop(index="B0_A4_rerun")["valid_macroF1"].idxmax()
     print(f"\nselected by valid macro-F1 (excluding B0): {best}")
 
@@ -211,7 +211,7 @@ def main():
     test_pred = predict(feats, model, tok[kind]["test"], texts[kind]["test"], q_w)
 
     tag = best.split("_", 1)[0].lower()
-    path = save_submission(test["id"], test_pred, f"{GROUP}_run3_{tag}_norm_q.csv")
+    path = save_submission(test["id"], test_pred, f"{GROUP}_run5_{tag}_norm_q.csv")
     print(f"saved {path.relative_to(path.parent.parent)}")
     print("predicted class distribution on test:")
     print(pd.Series(test_pred).value_counts(normalize=True).round(3).to_string())

@@ -12,8 +12,19 @@ pip install -r code/requirements.txt
 2. `python code/approach_a_tfidf.py`: Approach A, TF-IDF + linear models (about 3–4 minutes on a laptop CPU).
 3. `python code/approach_b_normalize_q.py`: Approach B, normalization + q-class handling + label noise (about 7–8 minutes). It imports Approach A's code but does not change it, so the scripts can run in any order.
 4. `code/approach_c_wangchanberta.ipynb`: Approach C, WangchanBERTa fine-tuning. Run in Google Colab with a GPU (see below).
+5. `python code/ensemble.py`: ensembles of WangchanBERTa and A4 (about 1–2 minutes). Needs step 4's outputs: unzip the Colab zip so `predictions/approach_c_*_test_proba.csv` exists.
 
-Before submitting, set `GROUP` in `code/common.py` to your group number.
+Group number: `GROUP = "G66"` in `code/common.py`.
+
+## Submitted prediction files
+
+| File | Model | Written by |
+|---|---|---|
+| `G66_run1_e2_bert2_tfidf.csv` | E2: mean of WangchanBERTa C1, C2 and TF-IDF LR A4 | `ensemble.py` |
+| `G66_run2_e1_bert_tfidf.csv` | E1: 0.4 × C1 + 0.6 × A4 | `ensemble.py` |
+| `G66_run3_wangchanberta.csv` | C1: WangchanBERTa | `approach_c_wangchanberta.ipynb` |
+| `G66_run4_tfidf_lr.csv` | A4: TF-IDF word 1-2 + char 2-4, LR balanced | `approach_a_tfidf.py` |
+| `G66_run5_b4_norm_q.csv` | B4: A4 + normalization, q features, q weight, relabeling | `approach_b_normalize_q.py` |
 
 ## Approach A: what it does
 
@@ -34,7 +45,7 @@ The config with the best **valid** macro-F1 is retrained on train+valid and used
 Outputs:
 - `results/approach_a_results.csv`: macro-F1 and per-class F1 on valid and sample_labeled for every step
 - `results/approach_a_valid_predictions.csv`: valid predictions of every step, for error analysis
-- `predictions/<GROUP>_run2_tfidf_lr.csv`: test predictions, checked against `sample_submission.csv`
+- `predictions/<GROUP>_run4_tfidf_lr.csv`: test predictions, checked against `sample_submission.csv`
 
 ## Approach B: what it does
 
@@ -50,7 +61,7 @@ Starts from A4 and changes one thing per step:
 
 Tuning in B3/B4 uses only out-of-fold predictions on train, so valid stays held out. The best step on valid (excluding B0) is retrained on train+valid.
 
-Outputs: `results/approach_b_results.csv`, `results/approach_b_valid_predictions.csv`, `predictions/<GROUP>_run3_<step>_norm_q.csv`.
+Outputs: `results/approach_b_results.csv`, `results/approach_b_valid_predictions.csv`, `predictions/<GROUP>_run5_<step>_norm_q.csv`.
 
 ## Approach C: WangchanBERTa (Google Colab, GPU)
 
@@ -65,9 +76,21 @@ upload a zip of the repo and unzip it to `/content/repo` instead. The last cell 
 
 Best epoch per run is chosen on valid macro-F1. Outputs: `results/approach_c_results.csv`, `results/approach_c_history.csv`
 (loss and valid F1 per epoch), `results/approach_c_valid_predictions.csv`, valid/sample probabilities
-in `results/approach_c_*_proba.csv` (for ensembles), and `predictions/<GROUP>_run4_wangchanberta.csv`.
+in `results/approach_c_*_proba.csv` (for ensembles), and `predictions/<GROUP>_run3_wangchanberta.csv`.
 Set `RETRAIN_ON_TRAIN_VALID = True` to retrain the chosen run on train+valid (doubles the run time).
 GPU training is not bit-for-bit deterministic, so a rerun can differ slightly.
+
+## Ensemble: what it does
+
+Averages class probabilities of WangchanBERTa (C) and TF-IDF LR (A4):
+
+| Name | How |
+|---|---|
+| E1 | `w * C1 + (1 - w) * A4`, `w` chosen on valid macro-F1 (grid 0.0–1.0) |
+| E2 | equal mean of C1, C2 and A4 (nothing tuned) |
+
+Outputs: `results/ensemble_results.csv`, `results/ensemble_weight_sweep.csv`, `results/ensemble_valid_predictions.csv`,
+`predictions/<GROUP>_run1_e2_bert2_tfidf.csv`, `predictions/<GROUP>_run2_e1_bert_tfidf.csv`.
 
 ## Shared code
 
