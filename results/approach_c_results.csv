@@ -1,0 +1,3 @@
+experiment,valid_macroF1,valid_F1_pos,valid_F1_neu,valid_F1_neg,valid_F1_q,sample_macroF1,sample_F1_pos,sample_F1_neu,sample_F1_neg,sample_F1_q,best_epoch
+C1_wangchanberta,0.6685,0.5667,0.8099,0.8089,0.4884,0.7945,0.8889,0.8776,0.84,0.5714,3
+C2_wangchanberta_balanced,0.6199,0.5755,0.6898,0.7957,0.4186,0.8149,0.8,0.8049,0.8214,0.8333,3

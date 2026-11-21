@@ -1,0 +1,7 @@
+experiment,epoch,train_loss,minutes,valid_macroF1
+C1_wangchanberta,1,0.8215,2.4665,0.6238
+C1_wangchanberta,2,0.5831,2.4787,0.6511
+C1_wangchanberta,3,0.4863,2.4735,0.6685
+C2_wangchanberta_balanced,1,1.0713,2.466,0.5346
+C2_wangchanberta_balanced,2,0.7818,2.4538,0.5908
+C2_wangchanberta_balanced,3,0.6262,2.4636,0.6199

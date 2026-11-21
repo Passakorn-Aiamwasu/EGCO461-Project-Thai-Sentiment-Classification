@@ -12,6 +12,7 @@ pip install -r code/requirements.txt
 2. `python code/approach_a_tfidf.py`: Approach A, TF-IDF + linear models (about 3–4 minutes on a laptop CPU).
 3. `python code/approach_b_normalize_q.py`: Approach B, normalization + q-class handling + label noise (about 7–8 minutes). It imports Approach A's code but does not change it, so the scripts can run in any order.
 4. `code/approach_c_wangchanberta.ipynb`: Approach C, WangchanBERTa fine-tuning. Run in Google Colab with a GPU (see below).
+5. `python code/ensemble.py`: ensembles of WangchanBERTa and A4 (about 1–2 minutes). Needs step 4's outputs: unzip the Colab zip so `predictions/approach_c_*_test_proba.csv` exists.
 
 Before submitting, set `GROUP` in `code/common.py` to your group number.
 
@@ -68,6 +69,18 @@ Best epoch per run is chosen on valid macro-F1. Outputs: `results/approach_c_res
 in `results/approach_c_*_proba.csv` (for ensembles), and `predictions/<GROUP>_run4_wangchanberta.csv`.
 Set `RETRAIN_ON_TRAIN_VALID = True` to retrain the chosen run on train+valid (doubles the run time).
 GPU training is not bit-for-bit deterministic, so a rerun can differ slightly.
+
+## Ensemble: what it does
+
+Averages class probabilities of WangchanBERTa (C) and TF-IDF LR (A4):
+
+| Name | How |
+|---|---|
+| E1 | `w * C1 + (1 - w) * A4`, `w` chosen on valid macro-F1 (grid 0.0–1.0) |
+| E2 | equal mean of C1, C2 and A4 (nothing tuned) |
+
+Outputs: `results/ensemble_results.csv`, `results/ensemble_weight_sweep.csv`, `results/ensemble_valid_predictions.csv`,
+`predictions/<GROUP>_run5_e1_bert_tfidf.csv`, `predictions/<GROUP>_run5_e2_bert2_tfidf.csv`.
 
 ## Shared code
 
