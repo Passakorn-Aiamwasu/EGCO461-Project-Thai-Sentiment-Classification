@@ -10,6 +10,7 @@ pip install -r code/requirements.txt
 
 1. `baseline_naive_bayes.ipynb` (repo root): the Naive Bayes baseline from the course.
 2. `python code/approach_a_tfidf.py`: Approach A, TF-IDF + linear models (about 3–4 minutes on a laptop CPU).
+3. `python code/approach_b_normalize_q.py`: Approach B, normalization + q-class handling + label noise (about 7–8 minutes). It imports Approach A's code but does not change it, so the scripts can run in any order.
 
 Before submitting, set `GROUP` in `code/common.py` to your group number.
 
@@ -33,5 +34,23 @@ Outputs:
 - `results/approach_a_results.csv`: macro-F1 and per-class F1 on valid and sample_labeled for every step
 - `results/approach_a_valid_predictions.csv`: valid predictions of every step, for error analysis
 - `predictions/<GROUP>_run2_tfidf_lr.csv`: test predictions, checked against `sample_submission.csv`
+
+## Approach B: what it does
+
+Starts from A4 and changes one thing per step:
+
+| Step | Change |
+|---|---|
+| B0 | A4 rerun (reference) |
+| B1 | + text normalization (repeated chars, 555, URLs, numbers, emoji, PyThaiNLP normalize) |
+| B2 | + hand-made question features (particles, `?`, info words such as price/branch) |
+| B3 | + weight on P(q), tuned with 3-fold CV on train |
+| B4 | + relabel train rows the CV model disagrees with at ≥ 0.9 confidence (label noise) |
+
+Tuning in B3/B4 uses only out-of-fold predictions on train, so valid stays held out. The best step on valid (excluding B0) is retrained on train+valid.
+
+Outputs: `results/approach_b_results.csv`, `results/approach_b_valid_predictions.csv`, `predictions/<GROUP>_run3_<step>_norm_q.csv`.
+
+## Shared code
 
 `common.py` holds shared helpers (`load_data`, `thai_tokenize`, `evaluate`, `save_submission`). Use them in later approaches so every result is measured the same way.
