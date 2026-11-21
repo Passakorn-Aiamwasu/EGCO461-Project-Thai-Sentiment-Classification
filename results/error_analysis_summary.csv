@@ -1,0 +1,13 @@
+source,cause,count,share
+valid,label_noise,26,0.52
+valid,keyword_trap,9,0.18
+valid,implicit_emotion,4,0.08
+valid,mixed_or_comparison,4,0.08
+valid,slang_idiom,3,0.06
+valid,ambiguous,2,0.04
+valid,sarcasm,2,0.04
+sample,keyword_trap,3,0.375
+sample,mixed_or_comparison,2,0.25
+sample,implicit_emotion,1,0.125
+sample,sarcasm,1,0.125
+sample,slang_idiom,1,0.125

@@ -13,6 +13,8 @@ pip install -r code/requirements.txt
 3. `python code/approach_b_normalize_q.py`: Approach B, normalization + q-class handling + label noise (about 7–8 minutes). It imports Approach A's code but does not change it, so the scripts can run in any order.
 4. `code/approach_c_wangchanberta.ipynb`: Approach C, WangchanBERTa fine-tuning. Run in Google Colab with a GPU (see below).
 5. `python code/ensemble.py`: ensembles of WangchanBERTa and A4 (about 1–2 minutes). Needs step 4's outputs: unzip the Colab zip so `predictions/approach_c_*_test_proba.csv` exists.
+6. `python code/error_analysis.py`: builds the error analysis sheet (do not rerun after filling it in; use `--summarize`).
+7. `python code/make_figures.py`: report figures in `report/figures/`.
 
 Group number: `GROUP = "G66"` in `code/common.py`.
 
@@ -91,6 +93,14 @@ Averages class probabilities of WangchanBERTa (C) and TF-IDF LR (A4):
 
 Outputs: `results/ensemble_results.csv`, `results/ensemble_weight_sweep.csv`, `results/ensemble_valid_predictions.csv`,
 `predictions/<GROUP>_run1_e2_bert2_tfidf.csv`, `predictions/<GROUP>_run2_e1_bert_tfidf.csv`.
+
+## Error analysis
+
+`python code/error_analysis.py` writes `results/error_analysis_sheet.csv`: every E2 error on sample_labeled
+(with a draft cause) and 50 random E2 errors on valid, with A4 / C1 / E2 predictions side by side.
+Fill in `label_correct`, `better_label`, `cause` (list in the script) and `note`, then run
+`python code/error_analysis.py --summarize` to get `results/error_analysis_summary.csv`.
+Rerunning without `--summarize` overwrites the sheet.
 
 ## Shared code
 
